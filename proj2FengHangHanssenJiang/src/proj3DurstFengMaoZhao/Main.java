@@ -8,7 +8,7 @@
  * Date: 09/18/2018
  */
 
-package proj2FengHangHanssenJiang;
+package proj3DurstFengMaoZhao;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
@@ -26,13 +26,10 @@ import javafx.fxml.FXML;
  * the text of the button to "Yah, sure!", and displaying a text area
  * containing "Sample text"
  *
- * @author  Liwei Jiang, Yi Feng, Jackie Hang, Paige Hanssen
+ * @author  Robert Durst, Yi Feng, Melogy Mao, Danqing Zhao
  */
 public class Main extends Application {
-    // hello button specified in Main.fxml
-    @FXML Button helloButton;
-    // goodbye button specified in Main.fxml
-    @FXML Button goodbyeButton;
+
 
 
     /**
@@ -45,54 +42,18 @@ public class Main extends Application {
      */
     @Override public void start(Stage stage) throws Exception{
         // load the fxml file and get the root
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/proj2FengHangHanssenJiang/Main.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/proj3DurstFengMaoZhao/Main.fxml"));
         Parent root = loader.load();
 
         // initialize a scene and the css file
         Scene scene = new Scene(root, 300, 250);
-        scene.getStylesheets().add("/proj2FengHangHanssenJiang/Main.css");
+        scene.getStylesheets().add("/proj3DurstFengMaoZhao/Main.css");
 
         // configure the stage
-        stage.setTitle("FengHangHanssenJiang's Project 2");
+        stage.setTitle("DurstFengMaoZhao's Project ");
         stage.sizeToScene();
         stage.setScene(scene);
         stage.show();
-    }
-
-    /**
-     * Exit the program
-     *
-     * @param event ActionEvent object
-     */
-    @FXML void handleExitButtonAction(ActionEvent event) {
-        System.exit(0);
-    }
-
-    /**
-     * Create a dialog that takes in an integer between 0 and 255,
-     * and set the hello button text to the entered number
-     *
-     * @param event ActionEvent object
-     */
-    @FXML void handleHelloButtonAction(ActionEvent event) {
-        // set up the number input dialog
-        TextInputDialog dialog = new TextInputDialog("60");
-        dialog.setTitle("Give me a number");
-        dialog.setHeaderText("Give me an integer from 0 to 255:");
-
-        final Optional<String> enterValue = dialog.showAndWait();
-        if (enterValue.isPresent()) {
-            this.helloButton.setText(enterValue.get());
-        }
-    }
-
-    /**
-     * Sets the text of goodbye button to "Yah, sure!"
-     *
-     * @param event ActionEvent object
-     */
-    @FXML void handleGoodbyeButtonAction(ActionEvent event) {
-        goodbyeButton.setText("Yah, sure!");
     }
 
     /**

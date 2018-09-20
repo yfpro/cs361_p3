@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--File: Main.fxml-->
-<!--Names: Liwei Jiang, Yi Feng, Jackie Hang, Paige Hanssen-->
+<!--Names: Robert Durst, Yi Feng, Melogy Mao, Danqing Zhao-->
 <!--F18 CS361-->
 <!--Project 2-->
 <!--Date: 09/16/2018-->
@@ -15,7 +15,7 @@
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" fx:controller="proj2FengHangHanssenJiang.Main" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:id="VBox">
+<VBox prefHeight="400.0" prefWidth="640.0" fx:controller="proj3DurstFengMaoZhao.Controller" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:id="VBox">
     <MenuBar VBox.vgrow="NEVER">
         <Menu mnemonicParsing="false" text="File">
             <MenuItem mnemonicParsing="false" text="Exit" fx:id="exitButton" onAction="#handleExitButtonAction"/>
