@@ -1,11 +1,12 @@
 /*
  * File: Main.java
- * Names: Liwei Jiang, Yi Feng, Jackie Hang, Paige Hanssen
- * F18 CS361 Project 2
+ * Names: (Proj 1-2) Liwei Jiang, Yi Feng, Jackie Hang, Paige Hanssen
+ *        (Proj 3) Yi Feng, Melody Mao, Danqing Zhao, Robert Durst
+ * F18 CS361 Project 3
  * This file creates a window that contains Hello and Goodbye buttons that have features
  * of creating an "input a number" dialog, changing the text of the button to "Yah, sure!",
  * and displaying a text area containing "Sample text"
- * Date: 09/18/2018
+ * Date: 09/25/2018
  */
 
 package proj3DurstFengMaoZhao;
