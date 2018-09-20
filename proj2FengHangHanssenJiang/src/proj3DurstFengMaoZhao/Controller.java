@@ -57,4 +57,14 @@ public class Controller{
         goodbyeButton.setText("Yah, sure!");
     }
 
+    /**
+     * Create a dialog that shows information about the program
+     */
+    @FXML void handleExitButtonAction(ActionEvent event) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText("Look, an Information Dialog");
+        alert.setContentText("I have a great message for you!");
+    }
+
 }

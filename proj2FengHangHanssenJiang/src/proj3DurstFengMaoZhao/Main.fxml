@@ -18,6 +18,7 @@
 <VBox prefHeight="400.0" prefWidth="640.0" fx:controller="proj3DurstFengMaoZhao.Controller" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:id="VBox">
     <MenuBar VBox.vgrow="NEVER">
         <Menu mnemonicParsing="false" text="File">
+            <MenuItem mnemonicParsing="false" text="About..." fx:id="aboutButton" onAction="#handleAboutButtonAction"/>
             <MenuItem mnemonicParsing="false" text="Exit" fx:id="exitButton" onAction="#handleExitButtonAction"/>
         </Menu>
     </MenuBar>
