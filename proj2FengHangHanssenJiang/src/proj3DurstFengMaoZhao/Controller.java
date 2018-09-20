@@ -12,9 +12,9 @@ package proj3DurstFengMaoZhao;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import java.util.Optional;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -69,12 +69,17 @@ public class Controller{
 
     /**
      * Create a dialog that shows information about the program
+     *
+     * @param event ActionEvent object
      */
-    @FXML void handleExitButtonAction(ActionEvent event) {
+    @FXML void handleAboutButtonAction(ActionEvent event) {
         Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Information Dialog");
-        alert.setHeaderText("Look, an Information Dialog");
-        alert.setContentText("I have a great message for you!");
+        alert.setTitle("About us");
+        alert.setHeaderText("Some information about us...");
+        alert.setContentText("Authors: Yi Feng, Melody Mao, Danqing Zhao, Robert Durst");
+
+        alert.showAndWait();
+
     }
 
 }
