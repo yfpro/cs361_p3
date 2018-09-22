@@ -10,7 +10,6 @@
 
 package proj3DurstFengMaoZhao;
 
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
@@ -20,8 +19,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Optional;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
 
@@ -32,7 +29,7 @@ public class Controller{
     @FXML Button helloButton;
     // goodbye button specified in Main.fxml
     @FXML Button goodbyeButton;
-
+    // tab pane containing text areas for open files, specified in Main.fxml
     @FXML TabPane tabPane;
 
 
@@ -86,7 +83,12 @@ public class Controller{
         alert.showAndWait();
 
     }
-
+    
+    /**
+     * Opens a save dialog for the user to specify a filename
+     * and directory, then writes the new file
+     * @param event ActionEvent object
+     */
     @FXML void handleSaveAsButtonAction(ActionEvent event){
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("save the file as...");
@@ -106,16 +108,24 @@ public class Controller{
         }
 
     }
-
+    
+    /**
+     * Saves updates to pre-existing file, or if not previously
+     * saved, opens a save dialog for the user to specify a filename
+     * and directory, then writes the new file
+     * @param event ActionEvent object
+     */
     @FXML void handleSaveButtonAction(ActionEvent event){
 
         Tab tab = tabPane.getSelectionModel().getSelectedItem();
         String fileName = (String)tab.getUserData();
-
+        
+        //handle as unsaved file
         if (fileName == null) {
             handleSaveAsButtonAction(event);
         }
-
+        
+        //handle as previously saved file
         else{
             try {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
