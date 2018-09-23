@@ -87,6 +87,12 @@ public class Controller{
 
     }
 
+    /**
+     * Create a save dialog that allows the user to type in a file name
+     * and save the content of the current tab to the designated file
+     *
+     * @param event ActionEvent object
+     */
     @FXML void handleSaveAsButtonAction(ActionEvent event){
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("save the file as...");
@@ -107,6 +113,13 @@ public class Controller{
 
     }
 
+    /**
+     * Check whether the current tab has been saved
+     * If it has been saved, save the current content to that filE
+     * If not, create a save dialog that allows the user to save the content of the current tab to the designated file
+     *
+     * @param event ActionEvent object
+     */
     @FXML void handleSaveButtonAction(ActionEvent event){
 
         Tab tab = tabPane.getSelectionModel().getSelectedItem();
