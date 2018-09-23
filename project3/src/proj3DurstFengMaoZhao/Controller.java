@@ -10,7 +10,6 @@
 
 package proj3DurstFengMaoZhao;
 
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
@@ -20,8 +19,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Optional;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
 
@@ -32,7 +29,7 @@ public class Controller{
     @FXML Button helloButton;
     // goodbye button specified in Main.fxml
     @FXML Button goodbyeButton;
-
+    // tab pane containing text areas for open files, specified in Main.fxml
     @FXML TabPane tabPane;
 
 
@@ -87,10 +84,10 @@ public class Controller{
 
     }
 
+    
     /**
-     * Create a save dialog that allows the user to type in a file name
-     * and save the content of the current tab to the designated file
-     *
+     * Opens a save dialog for the user to specify a filename
+     * and directory, then writes the new file
      * @param event ActionEvent object
      */
     @FXML void handleSaveAsButtonAction(ActionEvent event){
@@ -113,22 +110,24 @@ public class Controller{
 
     }
 
+    
     /**
-     * Check whether the current tab has been saved
-     * If it has been saved, save the current content to that filE
-     * If not, create a save dialog that allows the user to save the content of the current tab to the designated file
-     *
+     * Saves updates to pre-existing file, or if not previously
+     * saved, opens a save dialog for the user to specify a filename
+     * and directory, then writes the new file
      * @param event ActionEvent object
      */
     @FXML void handleSaveButtonAction(ActionEvent event){
 
         Tab tab = tabPane.getSelectionModel().getSelectedItem();
         String fileName = (String)tab.getUserData();
-
+        
+        //handle as unsaved file
         if (fileName == null) {
             handleSaveAsButtonAction(event);
         }
-
+        
+        //handle as previously saved file
         else{
             try {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
