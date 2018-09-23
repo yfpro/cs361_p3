@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--File: Main.fxml-->
-<!--Names: Liwei Jiang, Yi Feng, Jackie Hang, Paige Hanssen-->
+<!--Names: Robert Durst, Yi Feng, Melogy Mao, Danqing Zhao-->
 <!--F18 CS361-->
-<!--Project 2-->
-<!--Date: 09/16/2018-->
+<!--Project 3-->
+<!--Date: 09/25/2018-->
 
 <!--imported packages-->
 <?import javafx.scene.control.Button?>
@@ -15,15 +15,27 @@
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
 <VBox prefHeight="400.0" prefWidth="640.0" fx:controller="proj3DurstFengMaoZhao.Controller" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:id="VBox">
     <MenuBar VBox.vgrow="NEVER">
         <Menu mnemonicParsing="false" text="File">
+            <MenuItem mnemonicParsing="false" text="About..." fx:id="aboutButton" onAction="#handleAboutButtonAction"/>
+            <SeparatorMenuItem/>
+            <MenuItem mnemonicParsing="false" text="Save As..." fx:id="saveAsButton" onAction="#handleSaveAsButtonAction"/>
+            <MenuItem mnemonicParsing="false" text="Save" fx:id="saveButton" onAction="#handleSaveButtonAction"/>
             <MenuItem mnemonicParsing="false" text="Exit" fx:id="exitButton" onAction="#handleExitButtonAction"/>
+
         </Menu>
     </MenuBar>
     <ToolBar prefHeight="40.0" prefWidth="640.0">
         <Button mnemonicParsing="false" text="Hello" fx:id="helloButton" onAction="#handleHelloButtonAction"/>
         <Button mnemonicParsing="false" text="Goodbye" fx:id="goodbyeButton" onAction="#handleGoodbyeButtonAction"/>
     </ToolBar>
-    <TextArea VBox.vgrow="ALWAYS" prefWidth="640.0" text="Sample text"/>
+    <TabPane fx:id="tabPane">
+        <Tab text="New file">
+            <TextArea VBox.vgrow="ALWAYS" prefWidth="640.0" text="Sample text"/>
+        </Tab>
+    </TabPane>
 </VBox>

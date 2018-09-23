@@ -1,7 +1,7 @@
 /*
  * File: Controller.java
- * Names: (Proj 1) Liwei Jiang, Yi Feng, Jackie Hang, Paige Hanssen
- *        (Proj 2) Yi Feng, Melody Mao, Danqing Zhao, Robert Durst
+ * Names: (Proj 1-2) Liwei Jiang, Yi Feng, Jackie Hang, Paige Hanssen
+ *        (Proj 3) Yi Feng, Melody Mao, Danqing Zhao, Robert Durst
  * F18 CS361 Project 3
  * This file contains the controller methods that define the functionality
  * for the window elements in Main.fxml.
@@ -10,17 +10,17 @@
 
 package proj3DurstFengMaoZhao;
 
-import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.scene.control.TextInputDialog;
-import java.util.Optional;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Optional;
+import javafx.fxml.FXML;
+import javafx.stage.FileChooser;
 
 public class Controller{
 
@@ -29,6 +29,8 @@ public class Controller{
     @FXML Button helloButton;
     // goodbye button specified in Main.fxml
     @FXML Button goodbyeButton;
+    // tab pane containing text areas for open files, specified in Main.fxml
+    @FXML TabPane tabPane;
 
 
     /**
@@ -65,6 +67,77 @@ public class Controller{
      */
     @FXML void handleGoodbyeButtonAction(ActionEvent event) {
         goodbyeButton.setText("Yah, sure!");
+    }
+
+    /**
+     * Create a dialog that shows information about the program
+     *
+     * @param event ActionEvent object
+     */
+    @FXML void handleAboutButtonAction(ActionEvent event) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("About us");
+        alert.setHeaderText("Some information about us...");
+        alert.setContentText("Authors: Yi Feng, Melody Mao, Danqing Zhao, Robert Durst");
+
+        alert.showAndWait();
+
+    }
+    
+    /**
+     * Opens a save dialog for the user to specify a filename
+     * and directory, then writes the new file
+     * @param event ActionEvent object
+     */
+    @FXML void handleSaveAsButtonAction(ActionEvent event){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("save the file as...");
+        File file = fileChooser.showSaveDialog(null);
+        if (file != null){
+            try{
+                BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+                Tab tab = tabPane.getSelectionModel().getSelectedItem();
+                TextArea textArea = (TextArea) tab.getContent();
+                writer.write(textArea.getText());
+                writer.close();
+                tab.setUserData(file.toString());
+            }
+            catch(IOException e){
+                System.out.println(e.getMessage());
+            }
+        }
+
+    }
+    
+    /**
+     * Saves updates to pre-existing file, or if not previously
+     * saved, opens a save dialog for the user to specify a filename
+     * and directory, then writes the new file
+     * @param event ActionEvent object
+     */
+    @FXML void handleSaveButtonAction(ActionEvent event){
+
+        Tab tab = tabPane.getSelectionModel().getSelectedItem();
+        String fileName = (String)tab.getUserData();
+        
+        //handle as unsaved file
+        if (fileName == null) {
+            handleSaveAsButtonAction(event);
+        }
+        
+        //handle as previously saved file
+        else{
+            try {
+                BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+                TextArea textArea = (TextArea) tab.getContent();
+                writer.write(textArea.getText());
+                writer.close();
+
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
     }
 
 }
