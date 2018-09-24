@@ -21,13 +21,11 @@
 <VBox prefHeight="400.0" prefWidth="640.0" fx:controller="proj3DurstFengMaoZhao.Controller" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:id="VBox" stylesheets="@Main.css">
     <MenuBar VBox.vgrow="NEVER">
         <Menu mnemonicParsing="false" text="File">
-            <MenuItem mnemonicParsing="false" text="About..." fx:id="aboutButton" onAction="#handleAboutAction"/>
+            <MenuItem mnemonicParsing="false" text="About..." fx:id="aboutButton" onAction="#handleAboutButtonAction"/>
             <SeparatorMenuItem/>
-            <MenuItem mnemonicParsing="false" text="New" fx:id="newMenuButton" onAction="#handleNewAction"/>
-            <MenuItem mnemonicParsing="false" text="Save As..." fx:id="saveAsMenuButton" onAction="#handleSaveAsAction"/>
-            <MenuItem mnemonicParsing="false" text="Save" fx:id="saveMenuButton" onAction="#handleSaveAction"/>
-            <MenuItem mnemonicParsing="false" text="Close" fx:id="closeMenuButton" onAction="#handleCloseAction"/>
-            <MenuItem mnemonicParsing="false" text="Exit" fx:id="exitMenuButton" onAction="#handleExitAction"/>
+            <MenuItem mnemonicParsing="false" text="Save As..." fx:id="saveAsButton" onAction="#handleSaveAsButtonAction"/>
+            <MenuItem mnemonicParsing="false" text="Save" fx:id="saveButton" onAction="#handleSaveButtonAction"/>
+            <MenuItem mnemonicParsing="false" text="Exit" fx:id="exitButton" onAction="#handleExitButtonAction"/>
 
         </Menu>
     </MenuBar>
@@ -37,7 +35,7 @@
     </ToolBar>
     <TabPane fx:id="tabPane">
         <Tab text="New file">
-            <TextArea VBox.vgrow="ALWAYS" prefWidth="640.0" fx:id="textArea_1" text="Sample text"/>
+            <TextArea VBox.vgrow="ALWAYS" prefWidth="640.0" text="Sample text"/>
         </Tab>
     </TabPane>
 </VBox>

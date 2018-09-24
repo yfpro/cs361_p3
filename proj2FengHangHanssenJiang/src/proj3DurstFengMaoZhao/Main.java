@@ -38,7 +38,7 @@ public class Main extends Application {
      */
     @Override public void start(Stage stage) throws Exception{
         // load the fxml file and get the root
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/proj3DurstFengMaoZhao/Main.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
         Parent root = loader.load();
 
         // initialize a scene and the css file

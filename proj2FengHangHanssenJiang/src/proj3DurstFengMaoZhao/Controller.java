@@ -14,11 +14,16 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Optional;
+
+//import com.sun.java.swing.action.ExitAction;
+
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
 
@@ -38,7 +43,7 @@ public class Controller{
      *
      * @param event ActionEvent object
      */
-    @FXML void handleExitButtonAction(ActionEvent event) {
+    @FXML void handleExitAction(ActionEvent event) {
         System.exit(0);
     }
 
@@ -69,12 +74,27 @@ public class Controller{
         goodbyeButton.setText("Yah, sure!");
     }
 
+    /** 
+     * Create a new tab named 'New file' with a text area
+     * 
+     * @param even ActionEvent object
+     */
+    @FXML void handleNewAction(ActionEvent event) {
+        Tab tab = new Tab();
+        tab.setText("New file");
+        tabPane.getTabs().add(tab);
+        TextArea ta = new TextArea();
+        ta.setText("sample text");
+        tab.setContent(ta);
+    }
+
+
     /**
      * Create a dialog that shows information about the program
      *
      * @param event ActionEvent object
      */
-    @FXML void handleAboutButtonAction(ActionEvent event) {
+    @FXML void handleAboutAction(ActionEvent event) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("About us");
         alert.setHeaderText("Some information about us...");
@@ -89,7 +109,7 @@ public class Controller{
      * and directory, then writes the new file
      * @param event ActionEvent object
      */
-    @FXML void handleSaveAsButtonAction(ActionEvent event){
+    @FXML void handleSaveAsAction(ActionEvent event){
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("save the file as...");
         File file = fileChooser.showSaveDialog(null);
@@ -101,6 +121,7 @@ public class Controller{
                 writer.write(textArea.getText());
                 writer.close();
                 tab.setUserData(file.toString());
+                tab.setText(file.toString());
             }
             catch(IOException e){
                 System.out.println(e.getMessage());
@@ -115,14 +136,14 @@ public class Controller{
      * and directory, then writes the new file
      * @param event ActionEvent object
      */
-    @FXML void handleSaveButtonAction(ActionEvent event){
+    @FXML void handleSaveAction(ActionEvent event){
 
         Tab tab = tabPane.getSelectionModel().getSelectedItem();
         String fileName = (String)tab.getUserData();
         
         //handle as unsaved file
         if (fileName == null) {
-            handleSaveAsButtonAction(event);
+            handleSaveAsAction(event);
         }
         
         //handle as previously saved file
@@ -135,6 +156,52 @@ public class Controller{
 
             } catch (IOException e) {
                 System.out.println(e.getMessage());
+            }
+        }
+
+    }
+
+    /** 
+    *
+    *
+    *   @param event ActionEvent object
+    */
+    @FXML void handleCloseAction(ActionEvent event){
+        Tab thisTab = tabPane.getSelectionModel().getSelectedItem();
+        Boolean saved = false;
+        if(thisTab.getUserData() != null){
+            try{
+                String fileName = (String) thisTab.getUserData();
+                TextArea ta = (TextArea) thisTab.getContent();
+                BufferedReader reader = new BufferedReader(new FileReader(fileName));
+                System.out.println(reader.readLine());
+                System.out.println(ta.getText());
+                if(reader.readLine().equals(ta.getText())){
+                    saved = true;
+                    System.out.println("saved");
+                    tabPane.getTabs().remove(thisTab);
+                }
+                reader.close();
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        if(saved == false){
+            Alert alert = new Alert(
+                Alert.AlertType.CONFIRMATION,
+                "Want to save before exit?",
+                ButtonType.YES,
+                ButtonType.NO,
+                ButtonType.CANCEL
+            );
+            alert.setTitle("Alert");
+            alert.showAndWait();
+            if(alert.getResult() == ButtonType.YES){
+                handleSaveAction(event);
+                tabPane.getTabs().remove(thisTab);
+            }
+            if(alert.getResult() == ButtonType.NO){
+                tabPane.getTabs().remove(thisTab);
             }
         }
 
