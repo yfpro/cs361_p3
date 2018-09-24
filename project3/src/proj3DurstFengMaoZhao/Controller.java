@@ -200,7 +200,6 @@ public class Controller{
                 String taText = ta.getText();
                 if(fileText.equals(taText)){
                     saved = true;
-                    System.out.println("saved");
                     tabPane.getTabs().remove(thisTab);
                 }
                 reader.close();
