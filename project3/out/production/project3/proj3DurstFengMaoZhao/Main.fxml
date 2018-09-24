@@ -18,7 +18,7 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.Tab?>
-<VBox prefHeight="400.0" prefWidth="640.0" fx:controller="proj3DurstFengMaoZhao.Controller" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:id="VBox" stylesheets="@Main.css">
+<VBox prefHeight="400.0" prefWidth="640.0" fx:controller="proj3DurstFengMaoZhao.Controller" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:id="VBox" >
     <MenuBar VBox.vgrow="NEVER">
         <Menu mnemonicParsing="false" text="File">
             <MenuItem mnemonicParsing="false" text="About..." fx:id="aboutButton" onAction="#handleAboutAction"/>
@@ -28,7 +28,14 @@
             <MenuItem mnemonicParsing="false" text="Save" fx:id="saveMenuButton" onAction="#handleSaveAction"/>
             <MenuItem mnemonicParsing="false" text="Close" fx:id="closeMenuButton" onAction="#handleCloseAction"/>
             <MenuItem mnemonicParsing="false" text="Exit" fx:id="exitMenuButton" onAction="#handleExitAction"/>
-
+        </Menu>
+         <Menu mnemonicParsing="false" text="Edit">
+            <MenuItem mnemonicParsing="false" text="Undo" fx:id="undoMenuButton" onAction="#handleEditAction"/>
+            <MenuItem mnemonicParsing="false" text="Redo" fx:id="redoMenuButton" onAction="#handleEditAction"/>
+            <MenuItem mnemonicParsing="false" text="Cut" fx:id="cutMenuButton" onAction="#handleEditAction"/>
+            <MenuItem mnemonicParsing="false" text="Copy" fx:id="copyMenuButton" onAction="#handleEditAction"/>
+            <MenuItem mnemonicParsing="false" text="Paste" fx:id="pasteMenuButton" onAction="#handleEditAction"/>
+            <MenuItem mnemonicParsing="false" text="Select all" fx:id="selectAllMenuButton" onAction="#handleEditAction"/>
         </Menu>
     </MenuBar>
     <ToolBar prefHeight="40.0" prefWidth="640.0">
@@ -37,7 +44,7 @@
     </ToolBar>
     <TabPane fx:id="tabPane">
         <Tab text="New file">
-            <TextArea VBox.vgrow="ALWAYS" prefWidth="640.0" fx:id="textArea_1" text="Sample text"/>
+            <TextArea VBox.vgrow="ALWAYS" prefWidth="640.0" text="Sample text"/>
         </Tab>
     </TabPane>
 </VBox>

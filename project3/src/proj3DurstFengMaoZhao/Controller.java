@@ -37,22 +37,6 @@ public class Controller{
     // tab pane containing text areas for open files, specified in Main.fxml
     @FXML TabPane tabPane;
 
-
-    /**
-     * Exit the program
-     * It will call a handleClose method for all tabs in tab pane to ask if it needs to be saved.
-     * @param event ActionEvent object
-     */
-    @FXML void handleExitAction(ActionEvent event) {
-        Integer size = tabPane.getTabs().size();
-        for(int i = 0; i< size; i++){
-            handleClose(tabPane.getTabs().get(0), event);
-        }
-        if(tabPane.getTabs().size() == 0){
-            System.exit(0);
-        }
-    }
-
     /**
      * Create a dialog that takes in an integer between 0 and 255,
      * and set the hello button text to the entered number
@@ -79,6 +63,23 @@ public class Controller{
     @FXML void handleGoodbyeButtonAction(ActionEvent event) {
         goodbyeButton.setText("Yah, sure!");
     }
+
+
+    /**
+     * Exit the program
+     * It will call a handleClose method for all tabs in tab pane to ask if it needs to be saved.
+     * @param event ActionEvent object
+     */
+    @FXML void handleExitAction(ActionEvent event) {
+        Integer size = tabPane.getTabs().size();
+        for(int i = 0; i< size; i++){
+            handleClose(tabPane.getTabs().get(0), event);
+        }
+        if(tabPane.getTabs().size() == 0){
+            System.exit(0);
+        }
+    }
+
 
     /** 
      * Create a new tab named 'New file' with a text area
