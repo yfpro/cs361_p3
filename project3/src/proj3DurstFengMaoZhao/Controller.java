@@ -17,10 +17,14 @@ import javafx.scene.control.Alert.AlertType;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Optional;
+import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.scene.Node;
+import javafx.stage.Window;
 
 //import com.sun.java.swing.action.ExitAction;
 
@@ -171,7 +175,7 @@ public class Controller{
     }
     /** 
     *   The close menu button behaviour. Call handleClose for current selected Tab.
-    *   
+    *
     *   @param event ActionEvent object
     */
     @FXML void handleCloseAction(ActionEvent event){
@@ -262,5 +266,61 @@ public class Controller{
                 System.out.println("Unexpected event!");
         }
     }
-    
+
+     /**
+     * 
+     * @param event ActionEvent object
+     */
+    @FXML void handleOpenAction(ActionEvent event){
+        // capture the current textarea
+        Tab tab = tabPane.getSelectionModel().getSelectedItem();
+        TextArea textArea = (TextArea) tab.getContent();
+
+        // instantiate and define a filechooser
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+        
+        //Show save file dialog
+        File file = fileChooser.showOpenDialog(null);
+        if(file != null){
+            String fileText = getFileContentString(file);
+            textArea.setText(fileText);
+            tab.setText(file.getAbsolutePath());
+            tab.setUserData(file.getAbsolutePath());
+        }
+    }
+
+    // TO FIX because copy-pasta
+    private String getFileContentString(File file){
+        StringBuilder stringBuffer = new StringBuilder();
+        BufferedReader bufferedReader = null;
+         
+        try {
+            // attempt to read a new file and instantiate a
+            // new buffer Reader
+            bufferedReader = new BufferedReader(new FileReader(file));
+            
+            // read through the file line by line and append
+            // to the buffer to return
+            String text;
+            while ((text = bufferedReader.readLine()) != null) {
+                stringBuffer.append(text);
+            }
+ 
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        } 
+
+        // once we are done, close the buffer reader
+        try {
+            bufferedReader.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+         
+        return stringBuffer.toString();
+    }
 }
