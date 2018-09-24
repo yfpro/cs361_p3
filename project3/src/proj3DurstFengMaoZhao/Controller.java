@@ -40,11 +40,17 @@ public class Controller{
 
     /**
      * Exit the program
-     *
+     * It will call a handleClose method for all tabs in tab pane to ask if it needs to be saved.
      * @param event ActionEvent object
      */
     @FXML void handleExitAction(ActionEvent event) {
-        System.exit(0);
+        Integer size = tabPane.getTabs().size();
+        for(int i = 0; i< size; i++){
+            handleClose(tabPane.getTabs().get(0), event);
+        }
+        if(tabPane.getTabs().size() == 0){
+            System.exit(0);
+        }
     }
 
     /**
@@ -84,7 +90,7 @@ public class Controller{
         tab.setText("New file");
         tabPane.getTabs().add(tab);
         TextArea ta = new TextArea();
-        ta.setText("sample text");
+        ta.setText("Sample text");
         tab.setContent(ta);
     }
 
@@ -162,23 +168,32 @@ public class Controller{
         }
 
     }
-
     /** 
-    *
-    *
+    *   The close menu button behaviour. Call handleClose for current selected Tab.
+    *   
     *   @param event ActionEvent object
     */
     @FXML void handleCloseAction(ActionEvent event){
         Tab thisTab = tabPane.getSelectionModel().getSelectedItem();
+        handleClose(thisTab, event);
+    }
+
+    /** 
+    *   Once called check if the input tab has been saved into a file, 
+    *   if so compares the file content with the content in textarea.
+    *   If the contents are different ask if the user wants to save the tab before close it.
+    */
+    
+    void handleClose(Tab thisTab, ActionEvent event){
         Boolean saved = false;
         if(thisTab.getUserData() != null){
             try{
                 String fileName = (String) thisTab.getUserData();
                 TextArea ta = (TextArea) thisTab.getContent();
                 BufferedReader reader = new BufferedReader(new FileReader(fileName));
-                System.out.println(reader.readLine());
-                System.out.println(ta.getText());
-                if(reader.readLine().equals(ta.getText())){
+                String fileText = reader.readLine();
+                String taText = ta.getText();
+                if(fileText.equals(taText)){
                     saved = true;
                     System.out.println("saved");
                     tabPane.getTabs().remove(thisTab);

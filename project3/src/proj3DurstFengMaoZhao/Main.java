@@ -46,6 +46,7 @@ public class Main extends Application {
 
         // configure the stage
         stage.setTitle("DurstFengMaoZhao's Project ");
+        scene.getStylesheets().add("/proj3DurstFengMaoZhao/Main.css");
         stage.sizeToScene();
         stage.setScene(scene);
         stage.show();
