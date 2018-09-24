@@ -26,7 +26,14 @@
             <MenuItem mnemonicParsing="false" text="Save As..." fx:id="saveAsButton" onAction="#handleSaveAsButtonAction"/>
             <MenuItem mnemonicParsing="false" text="Save" fx:id="saveButton" onAction="#handleSaveButtonAction"/>
             <MenuItem mnemonicParsing="false" text="Exit" fx:id="exitButton" onAction="#handleExitButtonAction"/>
-
+        </Menu>
+         <Menu mnemonicParsing="false" text="Edit">
+            <MenuItem mnemonicParsing="false" text="Undo" fx:id="undoMenuButton" onAction="#handleEditAction"/>
+            <MenuItem mnemonicParsing="false" text="Redo" fx:id="redoMenuButton" onAction="#handleEditAction"/>
+            <MenuItem mnemonicParsing="false" text="Cut" fx:id="cutMenuButton" onAction="#handleEditAction"/>
+            <MenuItem mnemonicParsing="false" text="Copy" fx:id="copyMenuButton" onAction="#handleEditAction"/>
+            <MenuItem mnemonicParsing="false" text="Paste" fx:id="pasteMenuButton" onAction="#handleEditAction"/>
+            <MenuItem mnemonicParsing="false" text="Select all" fx:id="selectAllMenuButton" onAction="#handleEditAction"/>
         </Menu>
     </MenuBar>
     <ToolBar prefHeight="40.0" prefWidth="640.0">
