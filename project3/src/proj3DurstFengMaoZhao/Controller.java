@@ -103,6 +103,7 @@ public class Controller{
         alert.showAndWait();
 
     }
+
     
     /**
      * Opens a save dialog for the user to specify a filename
@@ -129,6 +130,7 @@ public class Controller{
         }
 
     }
+
     
     /**
      * Saves updates to pre-existing file, or if not previously
@@ -207,4 +209,42 @@ public class Controller{
 
     }
 
+
+    /**
+     * Responds to user clicks for each menu item under the edit
+     * MenuBar drop down. Utilizes id from fxml to determine which
+     * action to execute.
+     * @param event ActionEvent object
+     */
+    @FXML void handleEditAction(ActionEvent event){
+
+        // capture data relevent to the triggered action
+        Tab tab = tabPane.getSelectionModel().getSelectedItem();
+        TextArea textArea = (TextArea) tab.getContent();
+        MenuItem clickedItem = (MenuItem) event.getTarget();
+        
+        switch(clickedItem.getId()) {
+            case "undoMenuButton":  
+                textArea.undo();
+                break;
+            case "redoMenuButton":  
+                textArea.redo();
+                break;
+            case "cutMenuButton":  
+                textArea.cut();
+                break;
+            case "copyMenuButton":  
+                textArea.copy();
+                break;
+            case "pasteMenuButton":  
+                textArea.paste();
+                break;
+            case "selectAllMenuButton":  
+                textArea.selectAll();
+                break;
+            default:
+                System.out.println("Unexpected event!");
+        }
+    }
+    
 }
