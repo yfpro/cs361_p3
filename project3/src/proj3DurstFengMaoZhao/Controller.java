@@ -105,7 +105,7 @@ public class Controller{
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("About us");
         alert.setHeaderText("Some information about us...");
-        alert.setContentText("Authors: Yi Feng, Melody Mao, Danqing Zhao, Robert Durst");
+        alert.setContentText("Authors:\nRobert Durst, Yi Feng, Melody Mao, Danqing Zhao\njoyful programmers who code happily together everyday :)");
 
         alert.showAndWait();
 
