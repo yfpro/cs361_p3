@@ -26,6 +26,10 @@ import java.util.Optional;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.scene.Node;
 import javafx.stage.Window;
+import java.util.HashMap;
+import java.util.UUID;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 //import com.sun.java.swing.action.ExitAction;
 
@@ -42,6 +46,10 @@ import javafx.stage.FileChooser;
 
 public class Controller{
 
+    // Keep a cache of opened/saved tabs
+    // key   - TextArea id
+    // value - SHA256(TextArea text)  
+    HashMap<String, String> tabContentCache = new HashMap<>(); ;
 
     // hello button specified in Main.fxml
     @FXML Button helloButton;
@@ -106,6 +114,13 @@ public class Controller{
         TextArea ta = new TextArea();
         ta.setText("Sample text");
         tab.setContent(ta);
+
+        // set new tab as the focused on tab
+        tabPane.getSelectionModel().select(tab);
+        
+        // Set a unique Id for the thing
+        String id = UUID.randomUUID().toString();
+        ta.setId(id);
     }
 
 
@@ -143,6 +158,9 @@ public class Controller{
                 writer.close();
                 tab.setUserData(file.toString());
                 tab.setText(file.toString());
+
+                 // Add to hashmap
+                 appendTabContentCache(textArea);
             }
             catch(IOException e){
                 System.out.println(e.getMessage());
@@ -176,6 +194,9 @@ public class Controller{
                 writer.write(textArea.getText());
                 writer.close();
 
+                // Add to hashmap
+                appendTabContentCache(textArea);
+
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
@@ -200,6 +221,7 @@ public class Controller{
     
     void handleClose(Tab thisTab, ActionEvent event){
         Boolean saved = false;
+<<<<<<< HEAD
         if(thisTab.getUserData() != null){
             
             String fileName = (String) thisTab.getUserData();
@@ -216,6 +238,19 @@ public class Controller{
             }
             
         }
+=======
+
+        TextArea textarea = (TextArea) thisTab.getContent();
+        String hashedText = hashAString(textarea.getText());
+        String id = textarea.getId();
+
+        if (tabContentCache.containsKey(id) && tabContentCache.get(id).equals(hashedText)) {
+            saved = true;
+            System.out.println("saved");
+            tabPane.getTabs().remove(thisTab);
+        } 
+
+>>>>>>> Utilize a hashmap for efficient caching of saved/opened tabs
         if(saved == false){
             Alert alert = new Alert(
                 Alert.AlertType.CONFIRMATION,
@@ -305,6 +340,13 @@ public class Controller{
             textArea.setText(fileText);
             tab.setText(file.getAbsolutePath());
             tab.setUserData(file.getAbsolutePath());
+
+            // Set a unique Id for the thing
+            String id = UUID.randomUUID().toString();
+            textArea.setId(id);
+
+            // Add to hashmap
+            appendTabContentCache(textArea);
         }
     }
 
@@ -339,6 +381,53 @@ public class Controller{
         }
          
         return stringBuffer.toString();
+    }
+
+    /**
+     * Updates/adds a textarea's content to the cache.
+     * 
+     * @param textArea TextArea object
+     */
+    private void appendTabContentCache(TextArea textArea) {
+        // capture data related to TextArea
+        String id = textArea.getId();
+        String content = textArea.getText();
+
+        tabContentCache.put(id, hashAString(content));
+    }
+
+    /**
+     * Removes a textarea's content to the cache.
+     * 
+     * @param textArea TextArea object
+     */
+    private void removeTabContentCache(TextArea textArea) {
+        // capture data related to TextArea
+        String id = textArea.getId();
+
+        tabContentCache.remove(id);
+    }
+
+    /**
+     * Applies SHA-256 to a string.
+     * 
+     * @param text     a normal String 
+     * @return String  a hashed String
+     */
+    private String hashAString(String text) {
+        // default returns input
+        String result = text;
+
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+            messageDigest.update(text.getBytes());
+            result = new String(messageDigest.digest());
+          }
+          catch (NoSuchAlgorithmException ex) {
+            System.err.println(ex);
+          }
+
+        return result;
     }
 
 }
