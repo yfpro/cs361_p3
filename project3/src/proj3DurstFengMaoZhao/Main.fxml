@@ -28,6 +28,7 @@
             <MenuItem mnemonicParsing="false" text="Save As..." fx:id="saveAsMenuButton" onAction="#handleSaveAsAction"/>
             <MenuItem mnemonicParsing="false" text="Save" fx:id="saveMenuButton" onAction="#handleSaveAction"/>
             <MenuItem mnemonicParsing="false" text="Close" fx:id="closeMenuButton" onAction="#handleCloseAction"/>
+            <SeparatorMenuItem/>
             <MenuItem mnemonicParsing="false" text="Exit" fx:id="exitMenuButton" onAction="#handleExitAction"/>
         </Menu>
          <Menu mnemonicParsing="false" text="Edit">

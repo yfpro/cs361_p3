@@ -300,19 +300,6 @@ public class Controller{
       * @param event ActionEvent object
       */
     @FXML void handleOpenAction(ActionEvent event){
-        // create a new tab
-        Tab tab = new Tab();
-
-        // add tab to tab pane
-        tabPane.getTabs().add(tab); 
-
-        // set new tab as the focused on tab
-        tabPane.getSelectionModel().select(tab);
-
-        // define new textarea and add to new tab
-        TextArea textArea = new TextArea();
-        tab.setContent(textArea);
-        
         // instantiate and define a filechooser
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
@@ -321,6 +308,19 @@ public class Controller{
         //Show save file dialog
         File file = fileChooser.showOpenDialog(null);
         if(file != null){
+            // create a new tab
+            Tab tab = new Tab();
+
+            // add tab to tab pane
+            tabPane.getTabs().add(tab); 
+
+            // set new tab as the focused on tab
+            tabPane.getSelectionModel().select(tab);
+
+            // define new textarea and add to new tab
+            TextArea textArea = new TextArea();
+            tab.setContent(textArea);
+
             String fileText = getFileContentString(file);
             textArea.setText(fileText);
             tab.setText(file.getAbsolutePath());
