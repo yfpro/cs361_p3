@@ -85,9 +85,20 @@ public class Controller{
      */
     @FXML void handleExitAction(ActionEvent event) {
         Integer size = tabPane.getTabs().size();
+
+        // set the new tab as the focus
+        tabPane.getSelectionModel().select(tabPane.getTabs().get(size-1));
+
         for(int i = 0; i< size; i++){
-            handleClose(tabPane.getTabs().get(0), event);
+            System.out.println(tabPane.getTabs());
+            System.out.println(size-i-1);
+            Boolean shouldBreak = handleClose(tabPane.getTabs().get(size-i-1), event);
+            
+            if (shouldBreak) {
+                break;
+            }
         }
+
         if(tabPane.getTabs().size() == 0){
             System.exit(0);
         }
@@ -219,10 +230,11 @@ public class Controller{
      * save, then it asks the user if he/she wants to save the
      * tab's TextArea's contents before closing it.
      * 
-     * @param event ActionEvent object
-     * @param thisTab Tab object
+     * @param event    ActionEvent object
+     * @param thisTab  Tab object
+     * @return Boolean should break for handleExitAction
     */
-    void handleClose(Tab tab, ActionEvent event){
+    Boolean handleClose(Tab tab, ActionEvent event){
         TextArea textArea = (TextArea) tab.getContent();
         String hashedText = hashAString(textArea.getText());
         String id = textArea.getId();
@@ -231,7 +243,7 @@ public class Controller{
         if (tabContentCache.containsKey(id) && tabContentCache.get(id).equals(hashedText)) {
             tabPane.getTabs().remove(tab);
             removeTabContentCache(textArea);
-            return;
+            return false;
         } 
 
         Alert alert = new Alert(
@@ -249,10 +261,15 @@ public class Controller{
         // handle user response
         if(alert.getResult() == ButtonType.YES){
             handleSaveAction(event);
+            removeTabContentCache(textArea);
             tabPane.getTabs().remove(tab);
         } else if(alert.getResult() == ButtonType.NO){
             tabPane.getTabs().remove(tab);
+        } else if (alert.getResult() == ButtonType.CANCEL) {
+            return true;
         }
+
+        return false;
     }
 
     /**
@@ -262,7 +279,6 @@ public class Controller{
      * @param event ActionEvent object
      */
     @FXML void handleEditAction(ActionEvent event){
-
         // capture data relevent to the triggered action
         Tab tab = tabPane.getSelectionModel().getSelectedItem();
         TextArea textArea = (TextArea) tab.getContent();
@@ -394,7 +410,7 @@ public class Controller{
      * 
      * @param textArea TextArea object
      */
-    private void removeTabContentCache(TextArea textArea) {
+    private void removeTabContentCache(TextArea textArea) {    
         // capture data related to TextArea
         String id = textArea.getId();
 
