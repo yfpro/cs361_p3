@@ -17,10 +17,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
 /**
- * This class creates a window that contains Hello and Goodbye buttons
- * that have features of creating an "input a number" dialog, changing
- * the text of the button to "Yah, sure!", and displaying a text area
- * containing "Sample text"
+ * This class creates a window that contains Hello and Goodbye buttons,
+ * a File menu for About/New/Open/Save/Save As/Close/Exit,
+ * a Edit menu for Undo/Redo/Cut/Copy/Paste/Select,
+ * and a tab pane that can contain any number of tabs for text areas
  *
  * @author  Robert Durst, Yi Feng, Melogy Mao, Danqing Zhao
  */
@@ -29,10 +29,7 @@ public class Main extends Application {
 
 
     /**
-     * Create a window that contains Hello and Goodbye buttons
-     * that have features of creating an "input a number" dialog,
-     * changing the text of the button to "Yah, sure!", and
-     * displaying a text area containing "Sample text"
+     * Create a window and load content from fxml and css
      *
      * @param stage The stage that contains the content
      */
