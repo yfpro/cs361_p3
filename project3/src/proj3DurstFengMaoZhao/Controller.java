@@ -318,7 +318,7 @@ public class Controller{
             // new buffer Reader
             reader = new FileReader(file);
             
-            // read through the file line by line and append
+            // read through the file character by character and append
             // to the buffer to return
             int chars = 0;
             while ((chars = reader.read()) != -1) {
