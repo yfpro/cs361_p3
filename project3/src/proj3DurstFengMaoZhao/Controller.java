@@ -17,6 +17,7 @@ import javafx.scene.control.Alert.AlertType;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -192,20 +193,20 @@ public class Controller{
     void handleClose(Tab thisTab, ActionEvent event){
         Boolean saved = false;
         if(thisTab.getUserData() != null){
-            try{
-                String fileName = (String) thisTab.getUserData();
-                TextArea ta = (TextArea) thisTab.getContent();
-                BufferedReader reader = new BufferedReader(new FileReader(fileName));
-                String fileText = reader.readLine();
-                String taText = ta.getText();
-                if(fileText.equals(taText)){
-                    saved = true;
-                    tabPane.getTabs().remove(thisTab);
-                }
-                reader.close();
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
+            
+            String fileName = (String) thisTab.getUserData();
+            File file = new File(fileName);
+            String fileString = new String();
+            fileString = getFileContentString(file);
+
+            TextArea ta = (TextArea) thisTab.getContent();
+            String taText = ta.getText();
+
+            if(fileString.equals(taText)){
+                saved = true;
+                tabPane.getTabs().remove(thisTab);
             }
+            
         }
         if(saved == false){
             Alert alert = new Alert(
@@ -271,10 +272,19 @@ public class Controller{
      * @param event ActionEvent object
      */
     @FXML void handleOpenAction(ActionEvent event){
-        // capture the current textarea
-        Tab tab = tabPane.getSelectionModel().getSelectedItem();
-        TextArea textArea = (TextArea) tab.getContent();
+        // create a new tab
+        Tab tab = new Tab();
 
+        // add tab to tab pane
+        tabPane.getTabs().add(tab); 
+
+        // set new tab as the focused on tab
+        tabPane.getSelectionModel().select(tab);
+
+        // define new textarea and add to new tab
+        TextArea textArea = new TextArea();
+        tab.setContent(textArea);
+        
         // instantiate and define a filechooser
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
@@ -291,35 +301,36 @@ public class Controller{
     }
 
     // TO FIX because copy-pasta
-    private String getFileContentString(File file){
+    String getFileContentString(File file){
         StringBuilder stringBuffer = new StringBuilder();
-        BufferedReader bufferedReader = null;
+        FileReader reader = null;
          
         try {
             // attempt to read a new file and instantiate a
             // new buffer Reader
-            bufferedReader = new BufferedReader(new FileReader(file));
+            reader = new FileReader(file);
             
             // read through the file line by line and append
             // to the buffer to return
-            String text;
-            while ((text = bufferedReader.readLine()) != null) {
-                stringBuffer.append(text);
+            int chars = 0;
+            while ((chars = reader.read()) != -1) {
+                stringBuffer.append((char)chars);
             }
  
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        } 
+        } catch(IOException io) {
+            System.out.println(io.getMessage());
+        }
 
         // once we are done, close the buffer reader
         try {
-            bufferedReader.close();
+            reader.close();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
          
         return stringBuffer.toString();
     }
+
 }
