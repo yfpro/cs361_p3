@@ -272,10 +272,19 @@ public class Controller{
      * @param event ActionEvent object
      */
     @FXML void handleOpenAction(ActionEvent event){
-        // capture the current textarea
-        Tab tab = tabPane.getSelectionModel().getSelectedItem();
-        TextArea textArea = (TextArea) tab.getContent();
+        // create a new tab
+        Tab tab = new Tab();
 
+        // add tab to tab pane
+        tabPane.getTabs().add(tab); 
+
+        // set new tab as the focused on tab
+        tabPane.getSelectionModel().select(tab);
+
+        // define new textarea and add to new tab
+        TextArea textArea = new TextArea();
+        tab.setContent(textArea);
+        
         // instantiate and define a filechooser
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
@@ -323,4 +332,5 @@ public class Controller{
          
         return stringBuffer.toString();
     }
+
 }
