@@ -31,6 +31,14 @@ import javafx.stage.Window;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
 
+/**
+ * This class contains event handlers for the buttons and the menu items.
+ * Buttons: Hello, Goodbye
+ * Menu items: Exit, New, About, Save As, Save, Close, Edit, Open
+ *
+ * @author  Robert Durst, Yi Feng, Melogy Mao, Danqing Zhao
+ */
+
 public class Controller{
 
 
