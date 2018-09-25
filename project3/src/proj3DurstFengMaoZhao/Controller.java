@@ -79,24 +79,47 @@ public class Controller{
 
     /**
      * Exit the program. Calls a handleClose method for all
-     * tabs in tab pane to ask if it needs to be saved.
+     * tabs in tab pane to ask if it needs to be saved. Goes
+     * through all tabs from left to right, looping around
+     * when past index 0.
      * 
      * @param event ActionEvent object
      */
     @FXML void handleExitAction(ActionEvent event) {
-        Integer size = tabPane.getTabs().size();
+        int startSize = tabPane.getTabs().size();
+        // starts from focused on tab 
+        int startIndex = tabPane.getSelectionModel().getSelectedIndex();
+        // secondaryIndex is the starting point for the second loop.
+        // i.e. for tabs [0][1][2][3]
+        //      startIndex     = 1
+        //      secondaryIndex = 1
+        //
+        //      since after we close all the tabs going left from 1,
+        //      we will have [2][3] left over. Thus our secondary
+        //      index will put us at [3].
+        int secondaryIndex = startSize - (startIndex + 2);
+        int counter = 0;
 
-        // set the new tab as the focus
-        tabPane.getSelectionModel().select(tabPane.getTabs().get(size-1));
-
-        for(int i = 0; i< size; i++){
-            System.out.println(tabPane.getTabs());
-            System.out.println(size-i-1);
-            Boolean shouldBreak = handleClose(tabPane.getTabs().get(size-i-1), event);
+        for (int i =  0; i < startSize; i++){
+            // check if we need to wrap around for second loop
+            if (startIndex < counter){
+                startIndex = secondaryIndex;
+                counter = 0; 
+            }
             
+            int curIndex = startIndex - counter;
+
+            // make sure the currently selected tab, by index and by focus,
+            // are in sync
+            tabPane.getSelectionModel().select(tabPane.getTabs().get(ind));
+            Boolean shouldBreak = handleClose(tabPane.getTabs().get(ind), event);
+
+            // if cancel is selected, break
             if (shouldBreak) {
                 break;
             }
+
+            counter += 1;
         }
 
         if(tabPane.getTabs().size() == 0){
