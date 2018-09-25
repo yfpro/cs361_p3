@@ -13,26 +13,18 @@ package proj3DurstFengMaoZhao;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Optional;
 import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.scene.Node;
-import javafx.stage.Window;
 import java.util.HashMap;
 import java.util.UUID;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-//import com.sun.java.swing.action.ExitAction;
-
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
 
@@ -43,13 +35,13 @@ import javafx.stage.FileChooser;
  *
  * @author  Robert Durst, Yi Feng, Melogy Mao, Danqing Zhao
  */
-
 public class Controller{
 
-    // Keep a cache of opened/saved tabs
-    // key   - TextArea id
-    // value - SHA256(TextArea text)  
-    HashMap<String, String> tabContentCache = new HashMap<>(); ;
+    /** Keep a cache of opened/saved tabs
+     *      key   - TextArea id
+     *      value - SHA256(TextArea text)  
+     */ 
+    HashMap<String, String> tabContentCache = new HashMap<>();
 
     // hello button specified in Main.fxml
     @FXML Button helloButton;
@@ -85,10 +77,10 @@ public class Controller{
         goodbyeButton.setText("Yah, sure!");
     }
 
-
     /**
-     * Exit the program
-     * It will call a handleClose method for all tabs in tab pane to ask if it needs to be saved.
+     * Exit the program. Calls a handleClose method for all
+     * tabs in tab pane to ask if it needs to be saved.
+     * 
      * @param event ActionEvent object
      */
     @FXML void handleExitAction(ActionEvent event) {
@@ -101,31 +93,37 @@ public class Controller{
         }
     }
 
-
     /** 
-     * Create a new tab named 'New file' with a text area
+     * Create a new tab named 'New file' with a text area.
      * 
      * @param even ActionEvent object
      */
     @FXML void handleNewAction(ActionEvent event) {
+        // instantiate a new Tab
         Tab tab = new Tab();
         tab.setText("New file");
-        tabPane.getTabs().add(tab);
-        TextArea ta = new TextArea();
-        ta.setText("Sample text");
-        tab.setContent(ta);
 
-        // set new tab as the focused on tab
+        // add to tabPane
+        tabPane.getTabs().add(tab);
+
+        // set the new tab as the focus
         tabPane.getSelectionModel().select(tab);
+
+        // instantiate the TextArea
+        TextArea textArea = new TextArea();
+        textArea.setText("Sample text");
+
+        // add TextArea to tab
+        tab.setContent(textArea);
         
-        // Set a unique Id for the thing
+        // Set a unique Id for the TextArea
         String id = UUID.randomUUID().toString();
-        ta.setId(id);
+        textArea.setId(id);
     }
 
-
     /**
-     * Create a dialog that shows information about the program
+     * Create and oepn a dialog that displays information about 
+     * the program.
      *
      * @param event ActionEvent object
      */
@@ -133,22 +131,22 @@ public class Controller{
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("About us");
         alert.setHeaderText("Some information about us...");
-        alert.setContentText("Authors:\nRobert Durst, Yi Feng, Melody Mao, Danqing Zhao\njoyful programmers who code happily together everyday :)");
+        alert.setContentText("Authors:\nRobert Durst, Yi Feng,Melody Mao, Danqing Zhao\njoyful programmers who code happily together everyday :)");
 
         alert.showAndWait();
-
     }
-
     
     /**
-     * Opens a save dialog for the user to specify a filename
-     * and directory, then writes the new file
+     * Opens a save dialog for the user to specify a filename and
+     * directory, then writes the new file
+     * 
      * @param event ActionEvent object
      */
-    @FXML void handleSaveAsAction(ActionEvent event){
+    @FXML void handleSaveAsAction(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("save the file as...");
         File file = fileChooser.showSaveDialog(null);
+
         if (file != null){
             try{
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file));
@@ -159,14 +157,13 @@ public class Controller{
                 tab.setUserData(file.toString());
                 tab.setText(file.toString());
 
-                 // Add to hashmap
+                 // add TextArea to hashmap
                  appendTabContentCache(textArea);
             }
             catch(IOException e){
                 System.out.println(e.getMessage());
             }
         }
-
     }
 
     
@@ -176,102 +173,87 @@ public class Controller{
      * and directory, then writes the new file
      * @param event ActionEvent object
      */
-    @FXML void handleSaveAction(ActionEvent event){
-
+    @FXML void handleSaveAction(ActionEvent event) {
         Tab tab = tabPane.getSelectionModel().getSelectedItem();
         String fileName = (String)tab.getUserData();
         
         //handle as unsaved file
         if (fileName == null) {
             handleSaveAsAction(event);
-        }
-        
-        //handle as previously saved file
-        else{
+        } else {
+            //handle as previously saved file
             try {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
                 TextArea textArea = (TextArea) tab.getContent();
                 writer.write(textArea.getText());
                 writer.close();
 
-                // Add to hashmap
+                // add TextArea to hashmap
                 appendTabContentCache(textArea);
 
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
         }
-
     }
+
     /** 
-    *   The close menu button behaviour. Call handleClose for current selected Tab.
+    * Executes when close menu button selected. 
     *
-    *   @param event ActionEvent object
+    * @param event ActionEvent object
     */
-    @FXML void handleCloseAction(ActionEvent event){
+    @FXML void handleCloseAction(ActionEvent event) {
         Tab thisTab = tabPane.getSelectionModel().getSelectedItem();
         handleClose(thisTab, event);
     }
 
     /** 
-    *   Once called check if the input tab has been saved into a file, 
-    *   if so compares the file content with the content in textarea.
-    *   If the contents are different ask if the user wants to save the tab before close it.
+     * Checks against the tabContentCache if:
+     *      a) the current tab has been saved yet
+     *      b) the current tab has changed since last save
+     * 
+     * This method utilizes the tabContentCache for quick
+     * and efficient lookups.
+     * 
+     * If the tab hasn't been saved, or has changed since last
+     * save, then it asks the user if he/she wants to save the
+     * tab's TextArea's contents before closing it.
+     * 
+     * @param event ActionEvent object
+     * @param thisTab Tab object
     */
-    
-    void handleClose(Tab thisTab, ActionEvent event){
-        Boolean saved = false;
-<<<<<<< HEAD
-        if(thisTab.getUserData() != null){
-            
-            String fileName = (String) thisTab.getUserData();
-            File file = new File(fileName);
-            String fileString = new String();
-            fileString = getFileContentString(file);
+    void handleClose(Tab tab, ActionEvent event){
+        TextArea textArea = (TextArea) tab.getContent();
+        String hashedText = hashAString(textArea.getText());
+        String id = textArea.getId();
 
-            TextArea ta = (TextArea) thisTab.getContent();
-            String taText = ta.getText();
-
-            if(fileString.equals(taText)){
-                saved = true;
-                tabPane.getTabs().remove(thisTab);
-            }
-            
-        }
-=======
-
-        TextArea textarea = (TextArea) thisTab.getContent();
-        String hashedText = hashAString(textarea.getText());
-        String id = textarea.getId();
-
+        // check if (a) and (b)
         if (tabContentCache.containsKey(id) && tabContentCache.get(id).equals(hashedText)) {
-            saved = true;
-            System.out.println("saved");
-            tabPane.getTabs().remove(thisTab);
+            tabPane.getTabs().remove(tab);
+            removeTabContentCache(textArea);
+            return;
         } 
 
->>>>>>> Utilize a hashmap for efficient caching of saved/opened tabs
-        if(saved == false){
-            Alert alert = new Alert(
-                Alert.AlertType.CONFIRMATION,
-                "Want to save before exit?",
-                ButtonType.YES,
-                ButtonType.NO,
-                ButtonType.CANCEL
-            );
-            alert.setTitle("Alert");
-            alert.showAndWait();
-            if(alert.getResult() == ButtonType.YES){
-                handleSaveAction(event);
-                tabPane.getTabs().remove(thisTab);
-            }
-            if(alert.getResult() == ButtonType.NO){
-                tabPane.getTabs().remove(thisTab);
-            }
+        Alert alert = new Alert(
+            Alert.AlertType.CONFIRMATION,
+            "Want to save before exit?",
+            ButtonType.YES,
+            ButtonType.NO,
+            ButtonType.CANCEL
+        );
+        alert.setTitle("Alert");
+
+        // display alert
+        alert.showAndWait();
+
+        // handle user response
+        if(alert.getResult() == ButtonType.YES){
+            handleSaveAction(event);
+            tabPane.getTabs().remove(tab);
+        } else if(alert.getResult() == ButtonType.NO){
+            tabPane.getTabs().remove(tab);
         }
-
     }
-
 
     /**
      * Responds to user clicks for each menu item under the edit
@@ -311,9 +293,12 @@ public class Controller{
     }
 
      /**
-     * 
-     * @param event ActionEvent object
-     */
+      * Presents user with option to open a (txt) file from their
+      * local directory and then displays the text of the file in
+      * a new tab.
+      * 
+      * @param event ActionEvent object
+      */
     @FXML void handleOpenAction(ActionEvent event){
         // create a new tab
         Tab tab = new Tab();
@@ -330,8 +315,8 @@ public class Controller{
         
         // instantiate and define a filechooser
         FileChooser fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
-        fileChooser.getExtensionFilters().add(extFilter);
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(filter);
         
         //Show save file dialog
         File file = fileChooser.showOpenDialog(null);
@@ -345,12 +330,21 @@ public class Controller{
             String id = UUID.randomUUID().toString();
             textArea.setId(id);
 
-            // Add to hashmap
+            // add TextArea to hashmap
             appendTabContentCache(textArea);
         }
     }
 
-    // TO FIX because copy-pasta
+    /**
+     * Takes in a file, attempts to read the text from the file
+     * and return it as a String.
+     * 
+     * Modified and borrowed code from:
+     * https://stackoverflow.com/questions/326390/how-do-i-create-a-java-string-from-the-contents-of-a-file
+     * 
+     * @param  file    File object
+     * @return String  contents of the file
+     */
     String getFileContentString(File file){
         StringBuilder stringBuffer = new StringBuilder();
         FileReader reader = null;
@@ -366,7 +360,6 @@ public class Controller{
             while ((chars = reader.read()) != -1) {
                 stringBuffer.append((char)chars);
             }
- 
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         } catch(IOException io) {
@@ -429,5 +422,4 @@ public class Controller{
 
         return result;
     }
-
 }
